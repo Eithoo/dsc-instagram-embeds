@@ -34,10 +34,19 @@ async function execute(message) {
 			// MAYBE BUTTON INSTEAD OF REACTION?
 			message.channel.send('carousel logic isnt fully implemented yet');
 			const firstMedia = data.carousel_media[0];
+			const mediaOnlyPhotos = data.carousel_media.filter(m => m.media_type == 1);
 			const media = getMediaURL(firstMedia);
 			if (media.type == 'image') {
-				const embed = embeds.mediaImage(data, media.url, bot);
-				message.reply({ embeds: [embed] });
+				let imageEmbeds = [];
+				imageEmbeds.push( embeds.mediaImage(data, media.url, bot) );
+				if (mediaOnlyPhotos.length > 1) {
+					for (i=1; i<mediaOnlyPhotos.length; i++) {
+						if (i > 4) break;
+						const media = getMediaURL(mediaOnlyPhotos[i]);
+						imageEmbeds.push( embeds.mediaImageNext(media.url, data.code) );
+					}
+				}
+				message.reply({ embeds: imageEmbeds });
 				message.suppressEmbeds(true);
 			} else {
 				message.channel.send('video logic isnt implemented yet');

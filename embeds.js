@@ -134,13 +134,21 @@ embeds.mediaImage = (data, url, bot) => {
 	if (data.comment_count) desc += `${bot.supportServer.emojis.ig_comment} **${data.comment_count.toLocaleString('fr')}**\n`;
 	if ((data.like_count || data.comment_count) && data.caption.text) desc += '-----------------------------------\n';
 	if (data.caption.text) desc += processIGMentions(removeDotFlood(data.caption.text));
-	let embed = new Discord.MessageEmbed()
+	const embed = new Discord.MessageEmbed()
 		.setColor(colors.blue)
 		.setAuthor({ name: data.user.full_name, iconURL: data.user.profile_pic_url, url: 'https://www.instagram.com/'+data.user.username })
 		.setDescription(desc)
 		.setImage(url)
+		.setURL('https://www.instagram.com/p/'+data.code)
 		.setTimestamp(data.taken_at*1000)
 		.setFooter({ text: bot.user.username, iconURL: bot.user.avatarURL() });
+	return embed;
+}
+
+embeds.mediaImageNext = (imgURL, postCode) => {
+	const embed = new Discord.MessageEmbed()
+		.setImage(imgURL)
+		.setURL('https://www.instagram.com/p/'+postCode);
 	return embed;
 }
 
