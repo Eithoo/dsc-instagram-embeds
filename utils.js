@@ -74,9 +74,10 @@ function removeDotFlood(string) {
 }
 
 function processIGMentions(string) {
-	const userRegex = /@(\w+)/g;
+	const userRegex = /@([\w\.]+)/g;
+//	@([\w\.]+)
 	string = string.replaceAll(userRegex, '[@$1](https://instagram.com/$1)');
-	const tagRegex = /#(\w+)/g;
+	const tagRegex = /#([\w\.]+)/g;
 	return string.replaceAll(tagRegex, '[#$1](https://instagram.com/explore/tags/$1)');
 }
 
